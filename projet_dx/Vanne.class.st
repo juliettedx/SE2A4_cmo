@@ -22,3 +22,8 @@ Vanne >> in [
 Vanne >> in: aComposant [
 	in:= aComposant
 ]
+
+{ #category : 'accessing - structure variables' }
+Vanne >> state [
+	^ (in isNil ifTrue: [false] ifFalse: [in state])
+]

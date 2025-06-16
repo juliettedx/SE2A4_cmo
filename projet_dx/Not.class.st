@@ -22,3 +22,8 @@ Not >> in [
 Not >> in: aComposant [
 	in := aComposant
 ]
+
+{ #category : 'accessing - structure variables' }
+Not >> state [
+	^ (in isNil ifTrue: [false] ifFalse: [in state not])
+]

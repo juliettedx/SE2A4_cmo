@@ -1,6 +1,9 @@
 Class {
 	#name : 'Composant',
-	#superclass : 'Object',
+	#superclass : 'Circuit',
+	#instVars : [
+		'id'
+	],
 	#category : 'projet_dx',
 	#package : 'projet_dx'
 }
@@ -19,5 +22,5 @@ Composant >> etat: uneEntree [
 
 { #category : 'operation' }
 Composant >> id [
-	^self hash.
+	^self hash
 ]
