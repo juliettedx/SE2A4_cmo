@@ -5,7 +5,7 @@ Class {
 	#package : 'projet_dx'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'test' }
 CircuitTest >> testcircuit_interupteur [
 | circuit inter1 inter2 or not and vanne |
 circuit := Circuit new.
@@ -20,7 +20,7 @@ circuit ajtcompo: { inter1. inter2. or. not. and. vanne }.
 self assert: (circuit interrupteurs size = 2).
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'test' }
 CircuitTest >> testcircuit_vanne [
 | circuit inter1 inter2 or not and vanne |
 circuit := Circuit new.

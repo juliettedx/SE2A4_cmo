@@ -13,6 +13,11 @@ Not >> description [
  ^ super description ,'in: ', (self etat: in)
 ]
 
+{ #category : 'public access' }
+Not >> evaluate [ 
+	^ (in evaluate)not
+]
+
 { #category : 'accessing' }
 Not >> in [ 
 	^in
@@ -23,7 +28,13 @@ Not >> in: aComposant [
 	in := aComposant
 ]
 
+{ #category : 'accessing' }
+Not >> initialize [
+    fichier := 'not.png'.
+    position := 200@400.  "Par défaut, peut être défini après"
+]
+
 { #category : 'accessing - structure variables' }
 Not >> state [
-	^ (in isNil ifTrue: [false] ifFalse: [in state not])
+	[^ in state not] on: Error do: [ ^ false ].
 ]

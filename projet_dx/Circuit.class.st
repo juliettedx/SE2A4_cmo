@@ -2,7 +2,6 @@ Class {
 	#name : 'Circuit',
 	#superclass : 'Object',
 	#instVars : [
-		'nom',
 		'composants',
 		'interrupteurs',
 		'vannes'
@@ -19,17 +18,62 @@ Circuit class >> Instancier: aCollection [ "prend ca en paramètre"
    ^ circuit
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'operation' }
+Circuit >> LienDe: source vers: destination dans: space [
+    | line startPoint endPoint |
+
+    startPoint := source position +(100@20).  "sortie à droite"
+    endPoint := destination position +(0@30). "entrée à gauche"
+	line:=BlElement new.
+    line geometry: (BlLineGeometry from: startPoint to: endPoint).
+line border: (BlBorder paint: Color black width: 2).
+	(source state value ) ifTrue:[line border: (BlBorder paint: Color green width: 2)] ifFalse:[line border: (BlBorder paint: Color red width: 2)] .
+
+
+    space root addChild: line.
+
+]
+
+{ #category : 'operation' }
+Circuit >> ajoutConnexions: space [
+    composants do: [:compo |
+        
+        (compo isKindOf: Porte2Entrees ) ifTrue: [
+            compo in1 ifNotNil: [:entree1 |
+                self LienDe: entree1 vers: compo dans: space.
+            ].
+            compo in2 ifNotNil: [:entree2 |
+                self LienDe: entree2 vers: compo dans: space.
+            ].
+        ].
+
+        (compo isKindOf: Porte) ifTrue: [
+            (compo respondsTo: #in) ifTrue: [
+                compo in ifNotNil: [:entree |
+                    self LienDe: entree vers: compo dans: space.
+                ].
+            ].
+        ].
+
+        (compo isKindOf: Vanne) ifTrue: [
+            compo in ifNotNil: [:entree |
+                self LienDe: entree vers: compo dans: space.
+            ].
+        ].
+
+        "Les interrupteurs n’ont pas d’entrée"
+    ].
+
+]
+
+{ #category : 'operation' }
 Circuit >> ajtcompo: aCollection [
 "il faut ajouter dans les differentes collection des elements et les trier.
-tous est ajouter dans composant, apres faut regarder ce que c'est et ajt les interupteur et les vannes au bon endroit
-creation et utilisation des methodes getin et getouts ?? "
+tous est ajouter dans composant, apres faut regarder ce que c'est et ajt les interupteur et les vannes au bon endroit"
 composants addAll: aCollection .
-Transcript show: composants; cr.
 composants := composants asSortedCollection: [:a :b | a id < b id].
-Transcript show: composants; cr.
-interrupteurs := (self getIns: aCollection) asSortedCollection: [:a :b | a id < b id].
-vannes := (self getOuts: aCollection )asSortedCollection: [:a :b | a id < b id].
+interrupteurs := (self getIns: composants ) asSortedCollection: [:a :b | a id < b id].
+vannes := (self getOuts: composants )asSortedCollection: [:a :b | a id < b id].
 
 
 ]
@@ -41,7 +85,7 @@ Circuit >> composants [
 
 { #category : 'accessing' }
 Circuit >> composantsAvecIds [
-	^ composants collect: [:c | c class name , ' (' , c id printString , ')' ]
+	^ composants collect: [:c | c class name , ' (' , c id printString , ')', ' etat: ', c state asString ]
 
 ]
 
@@ -54,14 +98,37 @@ Circuit >> description [
 	^ tmp
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'operation' }
+Circuit >> dessin_circuits [ 
+	|space|
+	space:= BlSpace new.
+	composants do: [:elemt |
+		elemt affichagesur: space].
+	self ajoutConnexions: space.
+	space show.
+]
+
+{ #category : 'operation' }
+Circuit >> evaluate [ 
+	|sig|
+	sig:=vannes first evaluate.
+	Transcript 
+		show: 'Vanne ';
+		show: vannes first id;
+		show: ' : ';
+		show: sig value asString;
+		cr.
+	^sig
+]
+
+{ #category : 'operation' }
 Circuit >> getIns: aCollection [
 	|entree|
 	entree := aCollection select: [ :i |i class = Interrupteur ].
 	^entree
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'operation' }
 Circuit >> getOuts: aCollection [
 	|sortie|
 	sortie := aCollection select: [ :i |i class = Vanne ].

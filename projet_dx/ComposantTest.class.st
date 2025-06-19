@@ -14,7 +14,7 @@ Class {
 	#package : 'projet_dx'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'setup' }
 ComposantTest >> setUp [ 
 inter1 := Interrupteur new.
 inter2 := Interrupteur new.
@@ -37,7 +37,7 @@ ComposantTest >> testCircuitEtatoffoffoff [
 	inter1 off.
 	inter2 off.
 	inter3 off.
-	self assert: vanne state = false.
+	self assert: vanne state value equals: false.
 ]
 
 { #category : 'tests' }
@@ -45,7 +45,7 @@ ComposantTest >> testCircuitEtatonoffoff [
 	inter1 on.
 	inter2 off.
 	inter3 off.  
-	self assert: vanne state = true.
+	self assert: vanne state value equals: true.
 ]
 
 { #category : 'tests' }
@@ -54,7 +54,7 @@ ComposantTest >> testCircuitEtatonoffon [
 	inter2 off.
 	inter3 on.
 	
-	self assert: vanne state =false.
+	self assert: vanne state value equals: false.
 ]
 
 { #category : 'tests' }
@@ -62,7 +62,7 @@ ComposantTest >> testCircuitEtatononoff [
 	inter1 on.
 	inter2 on.
 	inter3 off.  
-	self assert: vanne state = true.
+	self assert: vanne state value equals: true.
 ]
 
 { #category : 'tests' }
@@ -85,7 +85,7 @@ ComposantTest >> testInterrupteurOnOff [
 	inter on.
 	self assert: inter state .
 	inter off.
-	self assert: inter state equals: false.
+	self assert: inter state value equals: false.
 ]
 
 { #category : 'tests' }
@@ -97,8 +97,8 @@ nt := Not new.
 noo := Not new.
 i in1: nt.
 van in: nt.
-self assert: ((i description findString: 'in1: ( Not ( ') > 0).
-self assert:( (van description findString: 'in : ( Not (')>0).
-self assert:( (noo description findString: 'in: non connecté')>0).
+self assert: ((i description findString: 'in1: Not ( ') > 0).
+self assert:( (van description findString: 'in : ( Not')>0).
+self assert:( (noo description findString: 'in: composant non connecté')>0).
 
 ]

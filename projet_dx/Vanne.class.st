@@ -13,17 +13,28 @@ Vanne >> description [
  ^ super description ,' in : ( ', (self etat: in), ' )'
 ]
 
+{ #category : 'operation' }
+Vanne >> evaluate [
+    ^ in evaluate.
+]
+
 { #category : 'accessing' }
 Vanne >> in [ 
 	^in
 ]
 
-{ #category : 'evaluating' }
+{ #category : 'accessing' }
 Vanne >> in: aComposant [
 	in:= aComposant
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : 'accessing' }
+Vanne >> initialize [
+    fichier := 'vanne_ouv.png'.
+    position := 550@280.  "Par défaut, peut être défini après"
+]
+
+{ #category : 'operation' }
 Vanne >> state [
-	^ (in isNil ifTrue: [false] ifFalse: [in state])
+	[^ in state] on: Error do: [ ^ false ].
 ]

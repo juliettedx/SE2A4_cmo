@@ -11,7 +11,7 @@ Class {
 
 { #category : 'operation' }
 Porte2Entrees >> description [ 
- ^ super description ,'in1: ( ', (self etat: in1),' ) ','in2: ', (self etat: in2)
+ ^ super description ,'in1: ', (self etat: in1),' ','in2: ', (self etat: in2)
 ]
 
 { #category : 'accessing' }
